@@ -43,6 +43,11 @@ POSITION_LIGNES = POSITION_SCORE[0], 180
 POSITION_TETRIS = POSITION_SCORE[0], 210
 POSITION_NIVEAU = POSITION_SCORE[0], 240
 
+
+
+"""
+visuel graphique de chaque pièces
+"""
 PIECES = {
 	'O': [
 		'0000\n0110\n0110\n0000',
@@ -129,6 +134,7 @@ class Jeu:
 		rect = rendu.get_rect()
 		rect.center = position
 		self.surface.blit(rendu, rect)
+		
 	def _getEvent(self):
 		for event in pygame.event.get():
 			if event.type == QUIT:
@@ -145,21 +151,26 @@ class Jeu:
 		print("Quitter")
 		pygame.quit()
 		sys.exit()
+
 	def _rendre(self):
 		pygame.display.update()
 		self.clock.tick()
+
 	def _attente(self):
 		print("Attente")
 		while self._getEvent() == None:
 			self._rendre()
+			
 	def _getPiece(self):
 		return PIECES.get(random.choice(PIECES_KEYS))
+
 	def _getCurrentPieceColor(self):
 		for l in self.current[0]:
 			for c in l:
 				if c != 0:
 					return c
 		return 0
+
 	def _calculerDonneesPieceCourante(self):
 		m=self.current[self.position[2]]
 		coords = []
@@ -168,6 +179,7 @@ class Jeu:
 				if k != 0:
 					coords.append([i+self.position[0], j+self.position[1]])
 		self.coordonnees = coords
+
 	def _estValide(self, x=0, y=0, r=0):
 		max_x, max_y = DIM_PLATEAU
 		if r == 0:
@@ -196,6 +208,7 @@ class Jeu:
 					return False
 #		print("Position testée valide: x=%s, y=%s" % (x, y))
 		return True
+
 	def _poserPiece(self):
 		print("La pièce est posée")
 		if self.position[1] <= 0:
@@ -228,10 +241,13 @@ class Jeu:
 			self.score += self.niveau * self.tetris
 		# Travail avec la pièce courante terminé
 		self.current = None
+
+
 	def _first(self):
 		self.plateau = [[0] * DIM_PLATEAU[0] for i in range(DIM_PLATEAU[1])]
 		self.score, self.pieces, self.lignes, self.tetris, self.niveau = 0, 0, 0, 0, 1
 		self.current, self.next, self.perdu = None, self._getPiece(), False
+
 	def _next(self):
 		print("Piece suivante")
 		self.current, self.next = self.next, self._getPiece()
@@ -239,6 +255,7 @@ class Jeu:
 		self.position = [int(DIM_PLATEAU[0] / 2)-2, -4, 0]
 		self._calculerDonneesPieceCourante()
 		self.dernier_mouvement = self.derniere_chute = time.time()
+
 	def _gererEvenements(self):
 		event = self._getEvent()
 		if event == K_p:
@@ -273,6 +290,7 @@ class Jeu:
 				a+=1
 			self.position[1] += a-1
 		self._calculerDonneesPieceCourante()
+
 	def _gererGravite(self):
 		if time.time() - self.derniere_chute > 0.35:
 			self.derniere_chute = time.time()
@@ -288,6 +306,7 @@ class Jeu:
 				print("On déplace vers le bas")
 				self.position[1] += 1
 				self._calculerDonneesPieceCourante()
+
 	def _dessinerPlateau(self):
 		self.surface.fill(COULEURS.get(0))
 		pygame.draw.rect(self.surface, COULEURS[8], START_PLABORD+TAILLE_PLABORD, BORDURE_PLATEAU)
@@ -310,6 +329,7 @@ class Jeu:
 		self._afficherTexte('Niveau: %s' % self.niveau, POSITION_NIVEAU)
 
 		self._rendre()
+
 	def play(self):
 		print("Jouer")
 		self.surface.fill(COULEURS.get(0))
