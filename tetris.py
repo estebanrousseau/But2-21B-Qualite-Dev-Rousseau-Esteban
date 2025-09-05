@@ -104,7 +104,12 @@ PIECES_KEYS = list(PIECES.keys())
 # Classe Tetris
 class Jeu:
 	"""
-	[Il manque la documentation de la classe]
+	permet de crer une instance d'une partie de tetris
+
+	atributs:
+		- clock: une representation du temps
+		- surface: dimentions de la fenetre de jeu
+		- font: couleur de l'arrière plan 
 	"""
 	def __init__(self):
 		pygame.init()
@@ -341,6 +346,8 @@ class Jeu:
 			self._gererGravite()
 			self._dessinerPlateau()
 
+
+"""appel de methodes afin de faire dérouler la partie"""
 if __name__ == '__main__':
 	j = Jeu()
 	print("Jeu prêt")
