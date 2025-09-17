@@ -43,6 +43,11 @@ POSITION_LIGNES = POSITION_SCORE[0], 180
 POSITION_TETRIS = POSITION_SCORE[0], 210
 POSITION_NIVEAU = POSITION_SCORE[0], 240
 
+
+
+
+#visuel graphique de chaque pièces
+
 PIECES = {
 	'O': [
 		'0000\n0110\n0110\n0000',
@@ -99,7 +104,12 @@ PIECES_KEYS = list(PIECES.keys())
 # Classe Tetris
 class Jeu:
 	"""
-	[Il manque la documentation de la classe]
+	permet de crer une instance d'une partie de tetris
+
+	atributs:
+		- clock: une representation du temps
+		- surface: dimentions de la fenetre de jeu
+		- font: couleur de l'arrière plan 
 	"""
 	def __init__(self):
 		pygame.init()
@@ -111,12 +121,12 @@ class Jeu:
 		}
 		pygame.display.set_caption('Application Tetris')
 
-	def start(self):
+	def start(self):# demarer le jeu
 		self._afficherTexte('Tetris', CENTRE_FENETRE, font = 'titre')
 		self._afficherTexte('Appuyer sur une touche...', POS)
 		self._attente()
 
-	def stop(self):
+	def stop(self): # arreter le jeu
 		self._afficherTexte('Perdu', CENTRE_FENETRE, font='titre')
 		self._attente()
 		self._quitter()
@@ -129,7 +139,8 @@ class Jeu:
 		rect = rendu.get_rect()
 		rect.center = position
 		self.surface.blit(rendu, rect)
-	def _getEvent(self):
+		
+	def _getEvent(self):# detecter la touche du clavier
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				self._quitter()
@@ -141,26 +152,31 @@ class Jeu:
 					continue
 				return event.key
 				
-	def _quitter(self):
+	def _quitter(self): #fermer la fenetre
 		print("Quitter")
 		pygame.quit()
 		sys.exit()
-	def _rendre(self):
+
+	def _rendre(self): # mettre a jour l'horloge 
 		pygame.display.update()
 		self.clock.tick()
-	def _attente(self):
+
+	def _attente(self): # fait tourner l'horloge tant qu'un evenement n'est pas detecté
 		print("Attente")
 		while self._getEvent() == None:
 			self._rendre()
-	def _getPiece(self):
+			
+	def _getPiece(self): #obtention d'une piece
 		return PIECES.get(random.choice(PIECES_KEYS))
-	def _getCurrentPieceColor(self):
+
+	def _getCurrentPieceColor(self):#obtenir la couleur d'une piece
 		for l in self.current[0]:
 			for c in l:
 				if c != 0:
 					return c
 		return 0
-	def _calculerDonneesPieceCourante(self):
+
+	def _calculerDonneesPieceCourante(self): #met à jour les coordonnées d'une pièce
 		m=self.current[self.position[2]]
 		coords = []
 		for i, l in enumerate(m):
@@ -168,7 +184,8 @@ class Jeu:
 				if k != 0:
 					coords.append([i+self.position[0], j+self.position[1]])
 		self.coordonnees = coords
-	def _estValide(self, x=0, y=0, r=0):
+
+	def _estValide(self, x=0, y=0, r=0): # verifie si la piece est dans le plateau
 		max_x, max_y = DIM_PLATEAU
 		if r == 0:
 			coordonnees = self.coordonnees
@@ -196,7 +213,8 @@ class Jeu:
 					return False
 #		print("Position testée valide: x=%s, y=%s" % (x, y))
 		return True
-	def _poserPiece(self):
+
+	def _poserPiece(self):# trivial
 		print("La pièce est posée")
 		if self.position[1] <= 0:
 			self.perdu = True
@@ -228,18 +246,22 @@ class Jeu:
 			self.score += self.niveau * self.tetris
 		# Travail avec la pièce courante terminé
 		self.current = None
-	def _first(self):
+
+
+	def _first(self):#placer la première pièce
 		self.plateau = [[0] * DIM_PLATEAU[0] for i in range(DIM_PLATEAU[1])]
 		self.score, self.pieces, self.lignes, self.tetris, self.niveau = 0, 0, 0, 0, 1
 		self.current, self.next, self.perdu = None, self._getPiece(), False
-	def _next(self):
+
+	def _next(self):#placer les pièces suivantes
 		print("Piece suivante")
 		self.current, self.next = self.next, self._getPiece()
 		self.pieces += 1
 		self.position = [int(DIM_PLATEAU[0] / 2)-2, -4, 0]
 		self._calculerDonneesPieceCourante()
 		self.dernier_mouvement = self.derniere_chute = time.time()
-	def _gererEvenements(self):
+
+	def _gererEvenements(self):#s'occupe des différents évennements
 		event = self._getEvent()
 		if event == K_p:
 			print("Pause")
@@ -273,7 +295,8 @@ class Jeu:
 				a+=1
 			self.position[1] += a-1
 		self._calculerDonneesPieceCourante()
-	def _gererGravite(self):
+
+	def _gererGravite(self):#trivial
 		if time.time() - self.derniere_chute > 0.35:
 			self.derniere_chute = time.time()
 			if not self._estValide():
@@ -288,7 +311,8 @@ class Jeu:
 				print("On déplace vers le bas")
 				self.position[1] += 1
 				self._calculerDonneesPieceCourante()
-	def _dessinerPlateau(self):
+
+	def _dessinerPlateau(self):#trivial
 		self.surface.fill(COULEURS.get(0))
 		pygame.draw.rect(self.surface, COULEURS[8], START_PLABORD+TAILLE_PLABORD, BORDURE_PLATEAU)
 		for i, ligne in enumerate(self.plateau):
@@ -310,7 +334,8 @@ class Jeu:
 		self._afficherTexte('Niveau: %s' % self.niveau, POSITION_NIVEAU)
 
 		self._rendre()
-	def play(self):
+
+	def play(self):#methode pour lancer la partie
 		print("Jouer")
 		self.surface.fill(COULEURS.get(0))
 		self._first()
@@ -321,6 +346,8 @@ class Jeu:
 			self._gererGravite()
 			self._dessinerPlateau()
 
+
+#appel de methodes afin de faire dérouler la partie
 if __name__ == '__main__':
 	j = Jeu()
 	print("Jeu prêt")
