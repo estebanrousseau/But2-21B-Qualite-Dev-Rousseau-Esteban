@@ -4,7 +4,8 @@
 """
 [Ce bloc est la documentation du module]
 Un Tetris avec Pygame.
-Ce code est basee sur le code de Sébastien CHAZALLET, auteur du livre "Python 3, les fondamentaux du language"
+Ce code est basee sur le code de Sébastien CHAZALLET, auteur du livre "Python 3, les fondamentaux du 
+language"
 """
 
 __author__ = "votre nom"
@@ -98,8 +99,8 @@ PIECES_KEYS = list(PIECES.keys())
 
 # Classe Tetris
 class Jeu:
-	"""
-	[Il manque la documentation de la classe]
+    """
+    [Il manque la documentation de la classe]
 	"""
 	def __init__(self):
 		pygame.init()
