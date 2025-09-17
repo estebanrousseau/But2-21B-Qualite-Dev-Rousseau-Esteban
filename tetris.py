@@ -46,9 +46,47 @@ PIECES_KEYS = list(constante.PIECES.keys())
 
 # Classe Tetris
 class Jeu:
+    """
+    Classe principale pour le jeu Tetris. 
+    Gère l'initialisation, la boucle de jeu, l'affichage, la gestion des pièces, du plateau, du score et des événements.
+        Initialise le jeu, la fenêtre, les polices et les paramètres de base.
+        Affiche l'écran de démarrage et attend une interaction de l'utilisateur.
+        Affiche l'écran de fin de partie et quitte le jeu après une attente.
+        Affiche un texte à une position donnée avec une couleur et une police spécifiées.
+        Args:
+            text (str): Texte à afficher.
+            position (tuple): Position du texte.
+            couleur (int): Index de la couleur.
+            font (str): Nom de la police à utiliser.
+        Récupère et traite les événements clavier et fenêtre.
+        Returns:
+            int or None: Code de la touche pressée ou None si aucun événement pertinent.
+        Quitte proprement le jeu et ferme la fenêtre.
+        Met à jour l'affichage et régule la fréquence d'images.
+        Attend qu'une touche soit pressée par l'utilisateur.
+        Sélectionne et retourne une nouvelle pièce aléatoire.
+        Returns:
+            list: Représentation de la pièce.
+        Retourne la couleur de la pièce courante.
+        Returns:
+            int: Index de la couleur.
+        Calcule les coordonnées de la pièce courante selon sa position et sa rotation.
+        Vérifie si le déplacement ou la rotation de la pièce courante est valide.
+        Args:
+            x (int): Décalage horizontal.
+            y (int): Décalage vertical.
+            r (int): Décalage de rotation.
+        Returns:
+            bool: True si le mouvement est valide, False sinon.
+        Pose la pièce courante sur le plateau, gère les lignes complétées et met à jour le score.
+        Initialise le plateau et les paramètres pour une nouvelle partie.
+        Passe à la pièce suivante et initialise sa position.
+        Gère les événements clavier pour déplacer, faire tomber ou faire tourner la pièce.
+        Gère la chute automatique de la pièce selon le temps écoulé.
+        Dessine le plateau, les pièces et les informations de score à l'écran.
+        Lance la boucle principale du jeu jusqu'à la fin de la partie.
 	"""
-	[Il manque la documentation de la classe]
-	"""
+	
 	def __init__(self):
 		pygame.init()
 		self.clock = pygame.time.Clock()
