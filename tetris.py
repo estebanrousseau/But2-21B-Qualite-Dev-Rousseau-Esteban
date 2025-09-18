@@ -3,7 +3,8 @@
 """
 [Ce bloc est la documentation du module]
 Un Tetris avec Pygame.
-Ce code est basee sur le code de Sébastien CHAZALLET, auteur du livre "Python 3, les fondamentaux du language"
+Ce code est basee sur le code de Sébastien CHAZALLET, auteur du livre "Python 3, les fondamentaux du 
+language"
 """
 
 __author__ = "votre nom"
@@ -81,8 +82,7 @@ PIECES_KEYS = list(constante.PIECES.keys())
 
 # Classe Tetris
 class Jeu:
-
-    """
+   """
     Classe principale pour le jeu Tetris. 
     Gère l'initialisation, la boucle de jeu, l'affichage, la gestion des pièces, du plateau, du score et des événements.
         Initialise le jeu, la fenêtre, les polices et les paramètres de base.
